@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<!-- Sidebar -->
+<ul th:fragment="sidebar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+	<!-- Sidebar - Brand -->
+	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+		<div class="sidebar-brand-icon rotate-n-15">
+			<i class="fas fa-project-diagram"></i>
+		</div>
+		<div class="sidebar-brand-text mx-3">Lenneflow</div>
+	</a>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider my-0">
+
+	<!-- Nav Item - Dashboard -->
+	<li class="nav-item active">
+		<a class="nav-link" href="/">
+			<i class="fas fa-fw fa-tachometer-alt"></i>
+			<span>Dashboard</span></a>
+	</li>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Orchestration
+	</div>
+
+	<!-- Nav Item - Charts -->
+	<li class="nav-item">
+		<a class="nav-link" href="charts.html">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Workflow Executions</span></a>
+	</li>
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Workflows
+	</div>
+
+	<!-- Nav Item - Create Workflow -->
+	<li class="nav-item">
+		<a class="nav-link" href="/workflow/new">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Create Workflow</span></a>
+	</li>
+
+	<!-- Nav Item - Create Workflow Step-->
+	<li class="nav-item">
+		<a class="nav-link" href="#">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Create Workflow Steps</span></a>
+	</li>
+
+	<!-- Nav Item - Workflow List -->
+	<li class="nav-item">
+		<a class="nav-link" href="/workflow/list">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Workflow List</span></a>
+	</li>
+
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Functions
+	</div>
+
+	<!-- Nav Item - Create Workflow -->
+	<li class="nav-item">
+		<a class="nav-link" href="/function/new">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Create Function</span></a>
+	</li>
+
+	<!-- Nav Item - Workflow List -->
+	<li class="nav-item">
+		<a class="nav-link" href="/function/list">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Function List</span></a>
+	</li>
+
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Workers
+	</div>
+
+	<!-- Nav Item - Create Workflow -->
+	<li class="nav-item">
+		<a class="nav-link" href="#">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Create Cluster</span></a>
+	</li>
+
+	<!-- Nav Item - Create Workflow Step-->
+	<li class="nav-item">
+		<a class="nav-link" href="#">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Create Node Groups</span></a>
+	</li>
+
+	<!-- Nav Item - Workflow List -->
+	<li class="nav-item">
+		<a class="nav-link" href="#">
+			<i class="fas fa-fw fa-chart-area"></i>
+			<span>Cluster List</span></a>
+	</li>
+
+
+</ul>
+<!-- End of Sidebar -->
+</body>
+</html>

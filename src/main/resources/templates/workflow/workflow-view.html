@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Lenneflow Client</title>
+
+    <style type="text/css">
+        .end-element { fill : #FFCCFF; }
+    </style>
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <!-- fontawesome-free -->
+    <link rel="stylesheet" href="/vendor/fontawesome-free/css/all.css">
+</head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:insert="sidebar :: sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <div th:insert="navheader :: navheader"></div>
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800" th:text="'View of ' + ${workflow.name}"></h1>
+            </div>
+            <div class="col-xl-11 col-md-6 mb-4">
+                <form method="get" action="/workflow/list">
+                    <button type="submit" class="btn btn-primary px-5"
+                    >Open Workflow List</button>
+                </form>
+            </div>
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div style="background-color: white" class="row">
+                    <div class="col border">
+                    <input type="hidden" id="chartsCodeId" th:value="${chartsCode}"/>
+                        <h3 class="h5 mb-0 text-gray-800">Flowchart</h3>
+                    <div align="center" id="canvas"></div>
+                    </div>
+                    <div class="col border">
+                        <h3 class="h5 mb-0 text-gray-800">Payload</h3>
+                        <textarea style="font-size: 12px; width: 100%" disabled rows="40" th:text="${payload}"></textarea>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="http://flowchart.js.org/flowchart-latest.js"></script>
+<!-- <script src="../release/flowchart.min.js"></script> -->
+
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
+<script>
+    window.onload = function () {
+        var chart;
+        var code = $("#chartsCodeId").val();
+
+        if (chart) {
+            chart.clean();
+        }
+
+        chart = flowchart.parse(code);
+        chart.drawSVG('canvas', {
+            // 'x': 30,
+            // 'y': 50,
+            'line-width': 2,
+            'maxWidth': 3,//ensures the flowcharts fits within a certian width
+            'line-length': 50,
+            'text-margin': 10,
+            'font-size': 14,
+            'font': 'normal',
+            'font-family': 'Helvetica',
+            'font-weight': 'normal',
+            'font-color': 'black',
+            'line-color': 'black',
+            'element-color': 'black',
+            'fill': 'white',
+            'yes-text': 'yes',
+            'no-text': 'no',
+            'arrow-end': 'block',
+            'scale': 1,
+            'symbols': {
+                'start': {
+                    //'font-color': 'red',
+                    'element-color': 'black',
+                    'fill': 'yellow'
+                },
+                'end':{
+                    //'font-color': 'red',
+                    'element-color': 'black',
+                    'fill': 'blue'
+                }
+            },
+            'flowstate' : {
+                'past' : { 'fill' : '#CCCCCC', 'font-size' : 12},
+                'current' : {'fill' : 'yellow', 'font-color' : 'red', 'font-weight' : 'bold'},
+                'future' : { 'fill' : '#FFFF99'},
+                'request' : { 'fill' : 'blue'},
+                'invalid': {'fill' : '#444444'},
+                'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
+                'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
+            }
+        });
+
+    };
+
+    function myFunction(event, node) {
+        console.log("You just clicked this node:", node);
+    }
+
+</script>
+
+</html>
