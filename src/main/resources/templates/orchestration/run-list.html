@@ -47,14 +47,14 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <i style="color: orange" class="fas fa-project-diagram fa-2x"></i>
+                    <i style="color: blue" class="fas fa-fw fa-running fa-2x"></i>
                     <div  class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 style="color: orange" class="h3 mb-0">List of Workflows</h1>
+                        <h1 style="color: blue" class="h3 mb-0">List of Workflow Runs</h1>
                     </div>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div style="background-color: #fadf9b" class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Workflow table</h6>
+                        <div style="background-color: #b3e4ec" class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Workflow Runs</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive table-striped">
@@ -62,46 +62,37 @@
                                     <thead>
                                     <tr>
                                         <th>Uid</th>
-                                        <th>Name</th>
-                                        <th>Restartable</th>
-                                        <th>Steps Count</th>
+                                        <th>Workflow Name</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Current Status</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Uid</th>
-                                        <th>Name</th>
-                                        <th>Restartable</th>
-                                        <th>Steps Count</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </tfoot>
                                     <tbody>
-                                    <tr th:each="workflow: ${workflows}">
+                                    <tr th:each="execution: ${executions}">
                                         <td>
                                             <span><a type="button" onclick="copyToClipboard()" data-toggle="tooltip" data-placement="button" title="Copy to Clipboard" class="btn btn-light btn-sm fa fa-copy"></a></span>
-                                            <span class="copy-input" th:text="${workflow.uid}"></span>
+                                            <span class="copy-input" th:text="${execution.runId}"></span>
                                         </td>
-                                        <td th:text="${workflow.name}"></td>
-                                        <td th:text="${workflow.restartable}"></td>
-                                        <td th:text="${workflow.steps.size()}"></td>
+                                        <td th:text="${execution.workflowName}"></td>
+                                        <td th:text="${execution.startTime}"></td>
+                                        <td th:text="${execution.endTime}"></td>
+                                        <td th:text="${execution.runStatus}"></td>
                                         <td>
-                                            <span><a type="button" data-toggle="tooltip" th:href="@{/executions/start/{uid}(uid=${workflow.uid})}" data-placement="top" title="Run this workflow" class="btn btn-success btn-sm fa fa-play"></a></span>
-                                            <span><a type="button" data-toggle="tooltip" th:href="@{/workflow/details/{uid}(uid=${workflow.uid})}" data-placement="top" title="Open Function Details" class="btn btn-info btn-sm fa fa-info"></a></span>
-                                            <span><a type="button" data-toggle="tooltip" th:href="@{/workflow/edit/{uid}(uid=${workflow.uid})}" data-placement="top" title="Edit Function" class="btn btn-primary btn-sm fa fa-edit"></a></span>
-                                            <span data-toggle="modal" th:attr="data-target='#modalDelete'+${workflow.uid}" data-target="#modalDelete"><button type="button" data-toggle="tooltip" data-placement="top" title="Delete and Undeploy Function" class="btn btn-danger btn-sm fa fa-trash"></button></span>
+                                            <span><a type="button" data-toggle="tooltip" th:href="@{/executions/details/{uid}(uid=${execution.runId})}" data-placement="top" title="Open Function Details" class="btn btn-info btn-sm fa fa-info"></a></span>
+                                            <span data-toggle="modal" th:attr="data-target='#modalDelete'+${execution.runId}" data-target="#modalDelete"><button type="button" data-toggle="tooltip" data-placement="top" title="Delete and Undeploy Function" class="btn btn-danger btn-sm fa fa-trash"></button></span>
                                             <div class="modal fade" id="modalDelete" role="dialog"
-                                                 th:id="modalDelete+${workflow.uid}" aria-hidden="true">
+                                                 th:id="modalDelete+${execution.runId}" aria-hidden="true">
                                                 <form class="form-valide" action="#"
-                                                      th:action="@{/workflow/delete/{uid}(uid=${workflow.uid})}" method="get">
+                                                      th:action="@{/executions/delete/{uid}(uid=${execution.runId})}" method="get">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-body">
                                                                 <label  class="col-form-label"
-                                                                       th:text="'Really want to delete the workflow' + '['+${workflow.name}+']'"></label>
+                                                                       th:text="'Really want to delete this run of ' + '['+${execution.workflowName}+']'"></label>
                                                                 <input type="hidden" id="functionUid" name="functionUid"
-                                                                       th:value="${workflow.uid}">
+                                                                       th:value="${execution.runId}">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

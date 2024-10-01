@@ -53,7 +53,7 @@
                     <div class="card o-hidden border-0 shadow-lg my-5">
                         <div class="card-body p-0">
                             <!-- Nested Row within Card Body -->
-                            <form th:action="@{/workflow/{uid}/step/new(uid=${workflow.uid})}" th:object="${workflowStep}" method="post">
+                            <form th:action="@{/workflow/{uid}/step/simple/new(uid=${workflow.uid})}" th:object="${workflowStep}" method="post">
                             <div class="row">
                                 <div class="col-lg-7">
                                     <div class="p-5">
@@ -63,13 +63,30 @@
 
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <label class="col-form-label">Workflow Step Name</label>
+                                                    <label class="col-form-label">Workflow-Step Name</label>
                                                     <input type="text" class="form-control" th:field="*{name}" th:required="required"
                                                            placeholder="">
                                                 </div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <label class="col-form-label">Step Execution Order</label>
+                                                    <input type="number" class="form-control" th:default="8080" th:field="*{executionOrder}" th:required="required">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">Workflow-Step Description</label>
+                                                <input type="text" class="form-control" th:field="*{description}" th:required="required"
+                                                       placeholder="">
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <label class="col-form-label">Retry Count</label>
+                                                    <input type="number" class="form-control" th:field="*{retryCount}" th:required="required"
+                                                            placeholder="">
+                                                </div>
                                                 <div class="col-sm-6">
                                                     <label class="col-form-label">Control Structure</label>
-                                                    <select class="form-control" th:field="*{controlStructure}" th:required="required">
+                                                    <select disabled class="form-control" th:field="*{controlStructure}" th:required="required">
+                                                        <option value="" selected>Please Select</option>
                                                         <option value="SIMPLE" selected>Simple</option>
                                                         <option value="SWITCH" selected>Switch</option>
                                                         <option value="DO_WHILE" selected>Do While</option>
@@ -77,41 +94,15 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-form-label">Workflow Step Description</label>
-                                                <input type="text" class="form-control" th:field="*{description}" th:required="required"
-                                                       placeholder="">
-                                            </div>
-                                            <div class="form-group row">
-
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <label class="col-form-label">Function ID</label>
-                                                    <input type="text" class="form-control" th:field="*{functionId}" th:required="required"
-                                                           placeholder="">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label class="col-form-label">Retry Count</label>
-                                                    <input type="number" class="form-control" th:field="*{retryCount}" th:required="required"
-                                                            placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <label class="col-form-label">Workflow Step Execution Order</label>
-                                                    <input type="number" class="form-control" th:default="8080" th:field="*{executionOrder}" th:required="required">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label class="col-form-label">Do While Switch Condition</label>
-                                                    <select class="form-control" th:field="*{switchCondition}"
-                                                            aria-label="Package Repository">
-                                                        <option value="DOCKER_HUB" selected>Docker Hub</option>
-                                                    </select>
-                                                </div>
-                                            </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label">&emsp;Lazy Deployment</label>
-                                            <div class="col-sm-1 mb-3 mb-sm-0">
-
+                                            <div class="col-sm-6">
+                                                <label class="col-form-label">Function</label>
+                                                <select class="form-control" th:field="*{functionId}" th:required="required">
+                                                    <option value="" selected>Please Select</option>
+                                                    <option th:each="func : ${functions}"
+                                                            th:value="${func.uid}" th:text="${func.name}">
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -121,33 +112,26 @@
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">&nbsp;</h1>
                                         </div>
-                                        <label class="col-form-label">Decision Cases</label>
-                                        <div th:each="decisionCase: ${workflowStep.decisionCases}" class="form-group row">
-                                            <div class="col-sm-4 mb-3 mb-sm-0">
-                                                <label class="col-form-label">Name</label>
-                                                <input type="text" class="form-control" th:field="*{decisionCases.get(0).name}" th:required="required">
-                                            </div>
-                                            <div  class="col-sm-4">
-                                                <label class="col-form-label">Function</label>
-                                                <select class="form-control" th:field="*{decisionCases.get(0).functionId}" th:required="required">
-                                                    <option th:each="func : ${functions}"
-                                                        th:value="${func.uid}" th:text="#{${func.name}}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-4 mb-3 mb-sm-0">
-                                                <label class="col-form-label">Retry Count</label>
-                                                <input type="number" class="form-control" th:field="*{decisionCases.get(0).retryCount}" th:required="required">
-                                            </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label">Input Data</label>
+                                            <textarea style="height: 300px" type="text" class="form-control" th:field="*{stringInputData}" th:required="required">
+                                                </textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-5">
+                                <div class="col-lg-7">
                                     <div class="p-5">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                                Create Function
-                                            </button>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <button type="submit" class="btn btn-primary btn-user btn-block" th:name="action" th:value = "addStep">
+                                                    Save and Add another Step
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <button type="submit" class="btn btn-primary btn-user btn-block" th:name="action" th:value = "saveStep">
+                                                    Save Workflow-Step
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

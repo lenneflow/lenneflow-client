@@ -1,4 +1,4 @@
-package de.lenneflow.lenneflowclient.model;
+package de.lenneflow.lenneflowclient.dto;
 
 import de.lenneflow.lenneflowclient.enums.ControlStructure;
 import lombok.AllArgsConstructor;
@@ -6,40 +6,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.beans.Transient;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkflowStep {
+public class WhileWorkflowStep {
+
 
     private String uid;
 
     private String name;
 
-    private String workflowUid;
-
-    private String workflowName;
+    private String workflowId;
 
     private String description;
 
-    private ControlStructure controlStructure;
+    private ControlStructure controlStructure = ControlStructure.DO_WHILE;
 
     private int executionOrder;
 
     private String functionId;
-
-    private String subWorkflowId;
-
-    List<DecisionCase> decisionCases = new ArrayList<>();
-
-    private String switchCondition;
 
     private String stopCondition;
 
@@ -47,10 +37,7 @@ public class WorkflowStep {
 
     private Integer retryCount;
 
-    private LocalDateTime created;
+    private LocalDateTime creationTime;
 
-    private LocalDateTime updated;
-
-    private String stringInputData;
-
+    private LocalDateTime updateTime;
 }

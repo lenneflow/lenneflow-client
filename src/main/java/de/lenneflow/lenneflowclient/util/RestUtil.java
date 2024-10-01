@@ -38,7 +38,6 @@ public class RestUtil {
         try {
             return restTemplate.getForObject(url, objectClass);
         } catch (RestClientException e) {
-            //TODO logger
             return null;
         }
     }
