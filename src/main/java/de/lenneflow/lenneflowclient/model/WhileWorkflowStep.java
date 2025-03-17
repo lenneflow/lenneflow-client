@@ -1,11 +1,11 @@
-package de.lenneflow.lenneflowclient.dto;
+package de.lenneflow.lenneflowclient.model;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,9 +13,8 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleWorkflowStep {
+public class WhileWorkflowStep {
 
-    private String uid;
 
     private String name;
 
@@ -27,11 +26,10 @@ public class SimpleWorkflowStep {
 
     private Integer retryCount = 0;
 
-    private String functionId;
+    private String functionUid;
+
+    private String stopCondition;
 
     private Map<String, Object> inputData = new LinkedHashMap<>();
 
-    private LocalDateTime creationTime;
-
-    private LocalDateTime updateTime;
 }

@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,27 +22,25 @@ public class Function {
 
     private String type;
 
-    private PackageRepository packageRepository;
+    private DeploymentState deploymentState;
 
-    private DeploymentState deploymentState = DeploymentState.UNDEPLOYED;
+    private PackageRepository packageRepository;
 
     private String resourcePath;
 
-    private String imageName;
+    private int servicePort;
 
     private boolean lazyDeployment;
 
-    private int servicePort;
+    private String imageName;
 
-    private int assignedHostPort;
+    private String cpuRequest;
 
-    private String serviceUrl;
+    private String memoryRequest;
 
-    private LocalDateTime creationTime;
+    private String inputSchemaUid;
 
-    private LocalDateTime updateTime;
-
-    private String inputSchema;
+    private String outputSchemaUid;
 
 }
 

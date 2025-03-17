@@ -55,7 +55,7 @@
                             <!-- Nested Row within Card Body -->
                             <form th:action="@{/workflow/{uid}/step/switch/new(uid=${workflow.uid})}" th:object="${workflowStep}" method="post">
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="p-5">
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4" th:text="${title}"></h1>
@@ -94,20 +94,13 @@
                                                 </div>
                                             </div>
                                         <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
                                                 <label class="col-form-label">Switch Condition</label>
-                                                <input type="text" class="form-control" th:field="*{switchCondition}" th:required="required"
+                                                <input type="text" class="form-control" th:field="*{switchCase}" th:required="required"
                                                        placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-form-label">Input Data</label>
-                                            <textarea style="height: 300px" type="text" class="form-control" th:field="*{stringInputData}" th:required="required">
-                                                </textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-8">
                                     <div class="p-5">
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">&nbsp;</h1>
@@ -120,7 +113,7 @@
                                             </div>
                                             <div  class="col-sm-4">
                                                 <label th:if="${iter.index} <= 0" class="col-form-label">Function</label>
-                                                <select class="form-control" th:field="*{decisionCases[__${iter.index}__].functionId}" >
+                                                <select class="form-control" th:field="*{decisionCases[__${iter.index}__].functionUid}" >
                                                     <option value="" selected>Please Select</option>
                                                     <option th:each="func : ${functions}"
                                                             th:value="${func.uid}" th:text="${func.name}">
@@ -128,8 +121,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-4 mb-3 mb-sm-0">
-                                                <label th:if="${iter.index} <= 0" class="col-form-label">Retry Count</label>
-                                                <input type="number" class="form-control" th:field="*{decisionCases[__${iter.index}__].retryCount}">
+                                                <label th:if="${iter.index} <= 0" class="col-form-label">Input Data</label>
+                                                <textarea class="form-control" th:field="*{decisionCases[__${iter.index}__].stringInputData}"></textarea>
                                             </div>
                                         </div>
                                         <div class="input-group-btn">

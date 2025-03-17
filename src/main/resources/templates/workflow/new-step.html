@@ -84,13 +84,10 @@
                                                             placeholder="">
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <label class="col-form-label">Control Structure</label>
+                                                    <label class="col-form-label">Type</label>
                                                     <select class="form-control" th:field="*{controlStructure}" th:required="required">
                                                         <option value="" selected>Please Select</option>
-                                                        <option value="SIMPLE" selected>Simple</option>
-                                                        <option value="SWITCH" selected>Switch</option>
-                                                        <option value="DO_WHILE" selected>Do While</option>
-                                                        <option value="SUB_WORKFLOW" selected>Sub Workflow</option>
+                                                        <option th:each="ctlStructure : ${ctlStructures}" th:value="${ctlStructure}" th:text="${ctlStructure}"></option>
                                                     </select>
                                                 </div>
                                             </div>

@@ -1,5 +1,6 @@
 package de.lenneflow.lenneflowclient.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.lenneflow.lenneflowclient.enums.RunStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +19,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class WorkflowExecution {
 
-    private String runId;
-
-    private String workflowInstanceId;
+    private String runUid;
 
     private String workflowName;
 
@@ -33,19 +31,15 @@ public class WorkflowExecution {
 
     private int workflowVersion;
 
+    @JsonIgnore
     private LocalDateTime startTime;
 
-    private String stringStartTime;
-
+    @JsonIgnore
     private LocalDateTime endTime;
 
-    private String stringEndTime;
+    private String failureReason;
 
-    private Duration duration;
-
-    private String errors;
-
-    private Map<String, Object> runOutput = new HashMap<>();
+    private Map<String, Object> outputData = new HashMap<>();
 
 
 }

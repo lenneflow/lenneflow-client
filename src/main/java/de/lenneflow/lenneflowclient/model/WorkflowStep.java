@@ -1,12 +1,12 @@
 package de.lenneflow.lenneflowclient.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.lenneflow.lenneflowclient.enums.ControlStructure;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.beans.Transient;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -33,24 +33,27 @@ public class WorkflowStep {
 
     private int executionOrder;
 
-    private String functionId;
+    private String functionUid;
 
-    private String subWorkflowId;
+    private String subWorkflowUid;
 
-    List<DecisionCase> decisionCases = new ArrayList<>();
+    private List<DecisionCase> decisionCases = new ArrayList<>();
 
-    private String switchCondition;
+    private String switchCase;
 
     private String stopCondition;
 
     private Map<String, Object> inputData = new LinkedHashMap<>();
 
-    private Integer retryCount;
+    private Integer retryCount = 0;
 
+    @JsonIgnore
     private LocalDateTime created;
 
+    @JsonIgnore
     private LocalDateTime updated;
 
+    @JsonIgnore
     private String stringInputData;
 
 }

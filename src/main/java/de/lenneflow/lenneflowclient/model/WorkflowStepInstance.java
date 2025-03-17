@@ -1,6 +1,7 @@
 package de.lenneflow.lenneflowclient.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.lenneflow.lenneflowclient.enums.ControlStructure;
 import de.lenneflow.lenneflowclient.enums.RunOrderLabel;
 import de.lenneflow.lenneflowclient.enums.RunStatus;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkflowStepInstance {
+public class WorkflowStepInstance{
 
     private String uid;
 
@@ -40,13 +41,15 @@ public class WorkflowStepInstance {
 
     private RunStatus runStatus;
 
-    private String functionId;
+    private String functionUid;
 
-    private String subWorkflowId;
+    private String subWorkflowUid;
 
-    List<DecisionCase> decisionCases = new ArrayList<>();
+    private List<DecisionCase> decisionCases = new ArrayList<>();
 
-    private String switchCondition;
+    private String selectedCaseName;
+
+    private String switchCase;
 
     private String stopCondition;
 
@@ -56,20 +59,26 @@ public class WorkflowStepInstance {
 
     private RunOrderLabel runOrderLabel;
 
-    private Integer retryCount;
+    private Integer retryCount = 0;
+
+    private Integer runCount = 0;
 
     private LocalDateTime created;
 
     private LocalDateTime updated;
 
-    private String errorMessage;
+    private String failureReason;
 
+    @JsonIgnore
     private LocalDateTime scheduledTime;
 
+    @JsonIgnore
     private LocalDateTime startTime;
 
+    @JsonIgnore
     private LocalDateTime endTime;
 
+    @JsonIgnore
     private LocalDateTime updateTime;
 
     private Map<String, Object> inputData = new LinkedHashMap<>();

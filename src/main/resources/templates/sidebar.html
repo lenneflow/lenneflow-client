@@ -7,7 +7,7 @@
 <ul th:fragment="sidebar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 	<!-- Sidebar - Brand -->
-	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
 		<div class="sidebar-brand-icon rotate-n-15">
 			<i class="fas fa-project-diagram"></i>
 		</div>
@@ -35,9 +35,43 @@
 	<!-- Nav Item - Charts -->
 	<li class="nav-item">
 		<a class="nav-link" href="/executions/list">
-			<i class="fas fa-fw fa-chart-area"></i>
 			<span>Workflow Executions</span></a>
 	</li>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Accounts
+	</div>
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+		   aria-expanded="true" aria-controls="collapsePages">
+			<span>User Management</span>
+		</a>
+		<div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/user/new">Create User</a>
+				<a class="collapse-item" href="/user/list">User List</a>
+			</div>
+		</div>
+	</li>
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tokenCollapse"
+		   aria-expanded="true" aria-controls="tokenCollapse">
+			<span>User Token</span>
+		</a>
+		<div id="tokenCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/user/new-token">Generate Token</a>
+				<a class="collapse-item" href="/user/new-token">My Tokens</a>
+			</div>
+		</div>
+	</li>
+
 	<!-- Divider -->
 	<hr class="sidebar-divider">
 
@@ -46,27 +80,30 @@
 		Workflows
 	</div>
 
-	<!-- Nav Item - Create Workflow -->
 	<li class="nav-item">
-		<a class="nav-link" href="/workflow/new">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Create Workflow</span></a>
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#wjsCollapse"
+		   aria-expanded="true" aria-controls="wjsCollapse">
+			<span>JSON Schema</span>
+		</a>
+		<div id="wjsCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/workflow/schema/new">New JSON Schema</a>
+				<a class="collapse-item" href="/workflow/schema/list">JSON Schema List</a>
+			</div>
+		</div>
 	</li>
-
-	<!-- Nav Item - Create Workflow Step-->
 	<li class="nav-item">
-		<a class="nav-link" href="#">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Create Workflow Steps</span></a>
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#workflowCollapse"
+		   aria-expanded="true" aria-controls="workflowCollapse">
+			<span>Workflow</span>
+		</a>
+		<div id="workflowCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/workflow/new">New Workflow</a>
+				<a class="collapse-item" href="/workflow/list">Workflow List</a>
+			</div>
+		</div>
 	</li>
-
-	<!-- Nav Item - Workflow List -->
-	<li class="nav-item">
-		<a class="nav-link" href="/workflow/list">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Workflow List</span></a>
-	</li>
-
 
 	<!-- Divider -->
 	<hr class="sidebar-divider">
@@ -76,18 +113,29 @@
 		Functions
 	</div>
 
-	<!-- Nav Item - Create Workflow -->
 	<li class="nav-item">
-		<a class="nav-link" href="/function/new">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Create Function</span></a>
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#fjsCollapse"
+		   aria-expanded="true" aria-controls="fjsCollapse">
+			<span>JSON Schema</span>
+		</a>
+		<div id="fjsCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/function/schema/new">New JSON Schema</a>
+				<a class="collapse-item" href="/function/schema/list">JSON Schema List</a>
+			</div>
+		</div>
 	</li>
-
-	<!-- Nav Item - Workflow List -->
 	<li class="nav-item">
-		<a class="nav-link" href="/function/list">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Function List</span></a>
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#functionCollapse"
+		   aria-expanded="true" aria-controls="functionCollapse">
+			<span>Function</span>
+		</a>
+		<div id="functionCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/function/new">New Function</a>
+				<a class="collapse-item" href="/function/list">Function List</a>
+			</div>
+		</div>
 	</li>
 
 
@@ -98,28 +146,31 @@
 	<div class="sidebar-heading">
 		Workers
 	</div>
-
-	<!-- Nav Item - Create Workflow -->
 	<li class="nav-item">
-		<a class="nav-link" href="#">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Create Cluster</span></a>
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#credentialsCollapse"
+		   aria-expanded="true" aria-controls="credentialsCollapse">
+			<span>Credentials</span>
+		</a>
+		<div id="credentialsCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="#">New Cloud Credential</a>
+				<a class="collapse-item" href="#">Cloud Credential List</a>
+			</div>
+		</div>
 	</li>
-
-	<!-- Nav Item - Create Workflow Step-->
 	<li class="nav-item">
-		<a class="nav-link" href="#">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Create Node Groups</span></a>
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#clusterCollapse"
+		   aria-expanded="true" aria-controls="clusterCollapse">
+			<span>Clusters</span>
+		</a>
+		<div id="clusterCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/worker/cloud/cluster/new">New Cluster</a>
+				<a class="collapse-item" href="#">Register Cluster</a>
+				<a class="collapse-item" href="/worker/cluster/list">Cluster List</a>
+			</div>
+		</div>
 	</li>
-
-	<!-- Nav Item - Workflow List -->
-	<li class="nav-item">
-		<a class="nav-link" href="#">
-			<i class="fas fa-fw fa-chart-area"></i>
-			<span>Cluster List</span></a>
-	</li>
-
 
 </ul>
 <!-- End of Sidebar -->

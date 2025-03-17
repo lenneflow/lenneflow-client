@@ -73,26 +73,26 @@
                                     <tr th:each="execution: ${executions}">
                                         <td>
                                             <span><a type="button" onclick="copyToClipboard()" data-toggle="tooltip" data-placement="button" title="Copy to Clipboard" class="btn btn-light btn-sm fa fa-copy"></a></span>
-                                            <span class="copy-input" th:text="${execution.runId}"></span>
+                                            <span class="copy-input" th:text="${execution.runUid}"></span>
                                         </td>
                                         <td th:text="${execution.workflowName}"></td>
                                         <td th:text="${execution.startTime}"></td>
                                         <td th:text="${execution.endTime}"></td>
                                         <td th:text="${execution.runStatus}"></td>
                                         <td>
-                                            <span><a type="button" data-toggle="tooltip" th:href="@{/executions/details/{uid}(uid=${execution.runId})}" data-placement="top" title="Open Function Details" class="btn btn-info btn-sm fa fa-info"></a></span>
-                                            <span data-toggle="modal" th:attr="data-target='#modalDelete'+${execution.runId}" data-target="#modalDelete"><button type="button" data-toggle="tooltip" data-placement="top" title="Delete and Undeploy Function" class="btn btn-danger btn-sm fa fa-trash"></button></span>
+                                            <span><a type="button" data-toggle="tooltip" th:href="@{/executions/details/{uid}(uid=${execution.runUid})}" data-placement="top" title="Open Function Details" class="btn btn-info btn-sm fa fa-info"></a></span>
+                                            <span data-toggle="modal" th:attr="data-target='#modalDelete'+${execution.runUid}" data-target="#modalDelete"><button type="button" data-toggle="tooltip" data-placement="top" title="Delete and Undeploy Function" class="btn btn-danger btn-sm fa fa-trash"></button></span>
                                             <div class="modal fade" id="modalDelete" role="dialog"
-                                                 th:id="modalDelete+${execution.runId}" aria-hidden="true">
+                                                 th:id="modalDelete+${execution.runUid}" aria-hidden="true">
                                                 <form class="form-valide" action="#"
-                                                      th:action="@{/executions/delete/{uid}(uid=${execution.runId})}" method="get">
+                                                      th:action="@{/executions/delete/{uid}(uid=${execution.runUid})}" method="get">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-body">
                                                                 <label  class="col-form-label"
                                                                        th:text="'Really want to delete this run of ' + '['+${execution.workflowName}+']'"></label>
                                                                 <input type="hidden" id="functionUid" name="functionUid"
-                                                                       th:value="${execution.runId}">
+                                                                       th:value="${execution.runUid}">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

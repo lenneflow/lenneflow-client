@@ -1,5 +1,6 @@
 package de.lenneflow.lenneflowclient.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,14 @@ public class Workflow {
 
     private long timeOutInSeconds = Long.MAX_VALUE;
 
+    private JsonSchema inputDataSchema;
+
+    private JsonSchema outputDataSchema;
+
+    @JsonIgnore
     private LocalDateTime created;
 
+    @JsonIgnore
     private LocalDateTime updated;
 
 }

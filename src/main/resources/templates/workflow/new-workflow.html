@@ -60,29 +60,33 @@
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4" th:text="${title}"></h1>
                                         </div>
-
-                                            <div class="form-group row">
+                                        <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                                     <label class="col-form-label">Workflow Name</label>
                                                     <input type="text" class="form-control" th:field="*{name}" th:required="required"
                                                            placeholder="">
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <label class="col-form-label">Timeout in Seconds</label>
-                                                    <input type="number" class="form-control" th:field="*{timeOutInSeconds}" th:required="required"
+                                                    <label class="col-form-label">Description</label>
+                                                    <input type="text" class="form-control" th:field="*{description}" th:required="required"
                                                            placeholder="">
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-form-label">Workflow Description</label>
-                                                <input type="text" class="form-control" th:field="*{description}" th:required="required"
-                                                       placeholder="">
-                                            </div>
+                                        </div>
                                         <div class="form-group row">
-                                            <label class="col-form-label">Restartable</label>
-                                            <div class="col-sm-1 mb-3 mb-sm-0">
-                                            <input checked="checked" class="form-control" type="checkbox" th:checked="${workflow.restartable}" th:field="*{restartable}" />
-                                            </div>
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <label class="col-form-label">Input Schema UID</label>
+                                                    <select class="form-control" th:field="*{inputDataSchemaUid}" th:required="required" >
+                                                        <option value="" selected></option>
+                                                        <option th:each="schema: ${schemaList}" th:value="${schema.uid}" th:text="${schema.name}"> </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-form-label">Output Schema UID</label>
+                                                    <select class="form-control" th:field="*{outputDataSchemaUid}" th:required="required" >
+                                                        <option value="" selected></option>
+                                                        <option th:each="schema: ${schemaList}" th:value="${schema.uid}" th:text="${schema.name}"> </option>
+                                                    </select>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>

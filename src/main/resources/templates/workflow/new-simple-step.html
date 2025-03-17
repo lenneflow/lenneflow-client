@@ -97,7 +97,7 @@
                                         <div class="form-group row">
                                             <div class="col-sm-6">
                                                 <label class="col-form-label">Function</label>
-                                                <select class="form-control" th:field="*{functionId}" th:required="required">
+                                                <select class="form-control" th:field="*{functionUid}" th:required="required">
                                                     <option value="" selected>Please Select</option>
                                                     <option th:each="func : ${functions}"
                                                             th:value="${func.uid}" th:text="${func.name}">

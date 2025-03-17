@@ -11,14 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class WorkflowDTO {
 
-
-    private String uid;
-
     private String name;
 
     private String description;
 
-    private boolean restartable = true;
+    private String inputDataSchemaUid;
 
-    private long timeOutInSeconds;
+    private String outputDataSchemaUid;
 }

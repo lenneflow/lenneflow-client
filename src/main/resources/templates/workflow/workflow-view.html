@@ -43,25 +43,27 @@
             <div th:insert="navheader :: navheader"></div>
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800" th:text="'View of ' + ${workflow.name}"></h1>
+                <h3>&nbsp;Workflow Details View</h3>
+                <a type="button" th:href="@{/workflow/{uid}/step/new(uid=${workflow.uid})}" class="btn btn-info btn-sm">Add Workflow Step</a>
             </div>
-            <div class="col-xl-11 col-md-6 mb-4">
-                <form method="get" action="/workflow/list">
-                    <button type="submit" class="btn btn-primary px-5"
-                    >Open Workflow List</button>
-                </form>
+            <div style="background-color: #fadf9b">
+                <h1 style="color: darkblue; text-align: center;" th:text=" ${workflow.name}"></h1>
             </div>
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div style="background-color: white" class="row">
                     <div class="col border">
                     <input type="hidden" id="chartsCodeId" th:value="${chartsCode}"/>
-                        <h3 class="h5 mb-0 text-gray-800">Flowchart</h3>
-                    <div align="center" id="canvas"></div>
+                        <h3 class="h5 mb-0 text-gray-800">&nbsp;</h3>
+                        <a style="text-align: right" type="button" th:href="@{/workflow/{uid}/step/new(uid=${workflow.uid})}" class="btn btn-info btn-sm">Add Workflow Step</a>
+                        <h3 class="h5 mb-0 text-gray-800">&nbsp;</h3>
+                        <div style="text-align: center;" id="canvas"></div>
                     </div>
                     <div class="col border">
-                        <h3 class="h5 mb-0 text-gray-800">Payload</h3>
-                        <textarea style="font-size: 12px; width: 100%" disabled rows="40" th:text="${payload}"></textarea>
+                        <h3 class="h5 mb-0 text-gray-800">&nbsp;</h3>
+                        <h3 class="h5 mb-0 text-gray-800">Payload<a type="button" onclick="copyToClipboard()" data-toggle="tooltip" data-placement="button" title="Copy to Clipboard" class="btn btn-light btn-sm fa fa-copy"></a></h3>
+                        <h3 class="h5 mb-0 text-gray-800">&nbsp;</h3>
+                        <pre class="copy-input" style="font-family: Garamond,serif;"></pre>
                     </div>
                 </div>
             </div>
@@ -74,7 +76,22 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="http://flowchart.js.org/flowchart-latest.js"></script>
-<!-- <script src="../release/flowchart.min.js"></script> -->
+
+<script src="https://unpkg.com/json-format-highlight@1.0.4/dist/json-format-highlight.js"></script>
+<script th:inline="javascript">
+    function highlight() {
+        const payload = /*[[${payload}]]*/ '{}';
+        const indented = JSON.stringify(JSON.parse(payload), null, 2);
+        document.querySelector("pre").innerHTML = jsonFormatHighlight(indented);
+    }
+    highlight();
+</script>
+
+<script src="/vendor/jquery.scrollTo.min.js"></script>
+
+<script src="/vendor/svg.js"></script>
+
+<script src="/vendor/flowsvg.min.js"></script>
 
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -98,13 +115,13 @@
             // 'x': 30,
             // 'y': 50,
             'line-width': 2,
-            'maxWidth': 3,//ensures the flowcharts fits within a certian width
+            'maxWidth': 5,//ensures the flowcharts fits within a certian width
             'line-length': 50,
             'text-margin': 10,
             'font-size': 14,
             'font': 'normal',
-            'font-family': 'Helvetica',
-            'font-weight': 'normal',
+            'font-family': 'Garamond',
+            'font-weight': 'bold',
             'font-color': 'black',
             'line-color': 'black',
             'element-color': 'black',
@@ -141,7 +158,18 @@
     function myFunction(event, node) {
         console.log("You just clicked this node:", node);
     }
-
+</script>
+<script>
+    const copyToClipboard = async () => {
+        try {
+            const element = document.querySelector(".copy-input");
+            await navigator.clipboard.writeText(element.textContent);
+            console.log("Text copied to clipboard!");
+        } catch (error) {
+            console.error("Failed to copy to clipboard:", error);
+            // Optional: Display an error message to the user
+        }
+    };
 </script>
 
 </html>
