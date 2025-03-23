@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.thymeleaf:thymeleaf-spring5:3.1.2.RELEASE'
     implementation 'org.modelmapper:modelmapper:3.2.1'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
+    implementation("org.springframework.boot:spring-boot-starter-security:3.4.4")
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

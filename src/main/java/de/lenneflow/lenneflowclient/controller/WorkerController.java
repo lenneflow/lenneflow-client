@@ -31,6 +31,14 @@ public class WorkerController {
         this.workflowEndpointProvider = workflowEndpointProvider;
         this.workerEndpointProvider = workerEndpointProvider;
     }
+    @GetMapping("/worker/k8s/token/list")
+    public String KubernetesTokenList(ModelMap model) {
+        model = controllerUtil.createModelMap(model);
+        List<AccessTokenDto> accessTokens = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllAccessTokenPath(), List.class);
+        model.addAttribute("accessTokens", accessTokens);
+        model.addAttribute("title", "Kubernetes Access Token List");
+        return "worker/access-token-list";
+    }
 
     @GetMapping("/worker/cloud/credential/new")
     public String newCloudCredentialGet(ModelMap model) {

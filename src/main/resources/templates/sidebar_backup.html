@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<!-- Sidebar -->
+<ul th:fragment="sidebar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+	<!-- Sidebar - Brand -->
+	<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+		<div class="sidebar-brand-icon rotate-n-15">
+			<i class="fas fa-project-diagram"></i>
+		</div>
+		<div class="sidebar-brand-text mx-3">Lenneflow</div>
+	</a>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider my-0">
+
+	<!-- Nav Item - Dashboard -->
+	<li class="nav-item active">
+		<a class="nav-link" href="/">
+			<i class="fas fa-fw fa-tachometer-alt"></i>
+			<span>Dashboard</span></a>
+	</li>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Orchestration
+	</div>
+
+	<!-- Nav Item - Charts -->
+	<li class="nav-item">
+		<a class="nav-link" href="/executions/list">
+			<span>Workflow Executions</span></a>
+	</li>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Accounts
+	</div>
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+		   aria-expanded="true" aria-controls="collapsePages">
+			<span>User Management</span>
+		</a>
+		<div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/user/new">Create User</a>
+				<a class="collapse-item" href="/user/list">User List</a>
+			</div>
+		</div>
+	</li>
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tokenCollapse"
+		   aria-expanded="true" aria-controls="tokenCollapse">
+			<span>User Token</span>
+		</a>
+		<div id="tokenCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/user/new-token">Generate Token</a>
+				<a class="collapse-item" href="/user/new-token">My Tokens</a>
+			</div>
+		</div>
+	</li>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Workflows
+	</div>
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#wjsCollapse"
+		   aria-expanded="true" aria-controls="wjsCollapse">
+			<span>JSON Schema</span>
+		</a>
+		<div id="wjsCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/workflow/schema/new">New JSON Schema</a>
+				<a class="collapse-item" href="/workflow/schema/list">JSON Schema List</a>
+			</div>
+		</div>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#workflowCollapse"
+		   aria-expanded="true" aria-controls="workflowCollapse">
+			<span>Workflow</span>
+		</a>
+		<div id="workflowCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/workflow/new">New Workflow</a>
+				<a class="collapse-item" href="/workflow/list">Workflow List</a>
+			</div>
+		</div>
+	</li>
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Functions
+	</div>
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#fjsCollapse"
+		   aria-expanded="true" aria-controls="fjsCollapse">
+			<span>JSON Schema</span>
+		</a>
+		<div id="fjsCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/function/schema/new">New JSON Schema</a>
+				<a class="collapse-item" href="/function/schema/list">JSON Schema List</a>
+			</div>
+		</div>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#functionCollapse"
+		   aria-expanded="true" aria-controls="functionCollapse">
+			<span>Function</span>
+		</a>
+		<div id="functionCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/function/new">New Function</a>
+				<a class="collapse-item" href="/function/list">Function List</a>
+			</div>
+		</div>
+	</li>
+
+
+	<!-- Divider -->
+	<hr class="sidebar-divider">
+
+	<!-- Heading -->
+	<div class="sidebar-heading">
+		Workers
+	</div>
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#credentialsCollapse"
+		   aria-expanded="true" aria-controls="credentialsCollapse">
+			<span>Credentials</span>
+		</a>
+		<div id="credentialsCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="#">New Cloud Credential</a>
+				<a class="collapse-item" href="#">Cloud Credential List</a>
+			</div>
+		</div>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#clusterCollapse"
+		   aria-expanded="true" aria-controls="clusterCollapse">
+			<span>Clusters</span>
+		</a>
+		<div id="clusterCollapse"  class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item" href="/worker/cloud/cluster/new">New Cluster</a>
+				<a class="collapse-item" href="#">Register Cluster</a>
+				<a class="collapse-item" href="/worker/cluster/list">Cluster List</a>
+			</div>
+		</div>
+	</li>
+
+</ul>
+<!-- End of Sidebar -->
+</body>
+</html>

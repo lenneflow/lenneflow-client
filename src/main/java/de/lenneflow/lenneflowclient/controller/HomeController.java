@@ -7,7 +7,12 @@ import de.lenneflow.lenneflowclient.endpointprovider.WorkflowEndpointProvider;
 import de.lenneflow.lenneflowclient.model.*;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.catalina.Cluster;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +54,24 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login(ModelMap model) {
+        return "login";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "/error/403";
+    }
+
+    @GetMapping(value = "/logout")
+    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }
+        return "redirect:/login?logout";
+    }
 
     private RunStatistic getRunStatistic(List<WorkflowInstance> instances){
         RunStatistic runStatistic = new RunStatistic();

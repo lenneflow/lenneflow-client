@@ -7,6 +7,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.lenneflow.lenneflowclient.enums.RunStatus;
 import de.lenneflow.lenneflowclient.model.*;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 
@@ -29,7 +31,7 @@ public class ControllerUtil {
     public ModelMap createModelMap(ModelMap model) {
         DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(LocaleContextHolder.getLocale());
 
-        model.addAttribute("loggedinusername", "");
+        model.addAttribute("loggedinusername", getLoggedInUserName());
         model.addAttribute("dateFormatSymbols", dateFormatSymbols);
         model.addAttribute("loggedinuser", "");
 
@@ -225,6 +227,30 @@ public class ControllerUtil {
         flowChartStep.setStartTime(instance.getStartTime());
         flowChartStep.setEndTime(instance.getEndTime());
         return flowChartStep;
+    }
+
+    public String getLoggedInUserName() {
+        String userName = "unknown";
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                userName = ((UserDetails) principal).getUsername();
+            } else {
+                userName = principal.toString();
+            }
+            return userName;
+        } catch (Exception e) {
+            return userName;
+        }
+
+    }
+
+    public User getLoggedInUser() {
+        //return userRepository.findByUserName(getLoggedInUserName());
+        User user = new User();
+        user.setUsername(getLoggedInUserName());
+        return user;
     }
 
 }
