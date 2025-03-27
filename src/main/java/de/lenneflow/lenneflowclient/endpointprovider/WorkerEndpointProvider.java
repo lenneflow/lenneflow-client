@@ -14,9 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class WorkerEndpointProvider {
 
-    @Value("${lenneflow.root.url}")
-    private String rootUrl;
-
     @Value("${lenneflow.worker.root.url}")
     private String workerRootUrl;
 

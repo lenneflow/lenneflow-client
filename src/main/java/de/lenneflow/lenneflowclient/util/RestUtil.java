@@ -1,14 +1,29 @@
 package de.lenneflow.lenneflowclient.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 @Component
 public class RestUtil {
+
+    private static final String ERROR_MESSAGE = "Error while getting object list from url: {} {}";
+    private static final Logger logger = LoggerFactory.getLogger(RestUtil.class);
+
+    @Value("${lenneflow.master.token}")
+    private String masterToken;
 
     private final RestTemplate restTemplate;
 
@@ -16,47 +31,66 @@ public class RestUtil {
         this.restTemplate = restTemplate;
     }
 
-    public <T> List<T> getForObjectList(String url, Class<List> objectClass){
+    public List getForObjectList(String url, Class<List> objectClass){
         try {
-            return restTemplate.getForObject(url, objectClass);
+            HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+            return restTemplate.exchange(url, HttpMethod.GET, entity, objectClass).getBody();
         } catch (RestClientException e) {
-            //TODO logger
+            logger.error(ERROR_MESSAGE, url, e.getMessage());
+            e.printStackTrace();
             return new ArrayList();
         }
     }
 
-    public <T> List<T> postForObjectList(String url, Object body, Class<List> objectClass){
+    public List postForObjectList(String url, Object body, Class<List> objectClass){
         try {
-            return restTemplate.postForObject(url, body, objectClass);
+            HttpEntity<Object> entity = new HttpEntity<>(body, getHeaders());
+            return restTemplate.exchange(url, HttpMethod.POST, entity, objectClass).getBody();
         } catch (RestClientException e) {
-            //TODO logger
+            logger.error(ERROR_MESSAGE, url, e.getMessage());
             return new ArrayList();
         }
     }
 
     public <T> T getForObject(String url, Class<T> objectClass){
         try {
-            return restTemplate.getForObject(url, objectClass);
+            HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+            return restTemplate.exchange(url, HttpMethod.GET, entity, objectClass).getBody();
         } catch (RestClientException e) {
+            logger.error(ERROR_MESSAGE, url, e.getMessage());
             return null;
         }
     }
 
     public void deleteObject(String url){
         try {
-            restTemplate.delete(url);
+            HttpEntity<String> entity = new HttpEntity<>(getHeaders());
+            restTemplate.exchange(url, HttpMethod.DELETE, entity, Void.class);
         } catch (RestClientException e) {
-            //TODO logger
+            logger.error(ERROR_MESSAGE, url, e.getMessage());
         }
     }
 
     public <T> T postForObject(String url, Object body, Class<T> objectClass){
         try {
-            return restTemplate.postForObject(url, body, objectClass);
+            HttpEntity<Object> entity = new HttpEntity<>(body, getHeaders());
+            return restTemplate.exchange(url, HttpMethod.POST, entity, objectClass).getBody();
         } catch (RestClientException e) {
-            //TODO logger
+            logger.error(ERROR_MESSAGE, url, e.getMessage());
             return null;
         }
+    }
+
+
+    public HttpHeaders getHeaders(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        System.out.println("Bearer " + masterToken.trim().getBytes());
+        headers.setBearerAuth(masterToken.trim());
+
+        return headers;
     }
 
 }

@@ -14,9 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrchestrationEndpointProvider {
 
-    @Value("${lenneflow.root.url}")
-    private String rootUrl;
-
     @Value("${lenneflow.orchestration.root.url}")
     private String orchestrationRootUrl;
 

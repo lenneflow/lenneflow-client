@@ -14,11 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountEndpointProvider {
 
-
-    @Value("${lenneflow.root.url}")
-    private String rootUrl;
-
-    @Value("${lenneflow.function.root.url}")
+    @Value("${lenneflow.account.root.url}")
     private String accountRootUrl;
 
     @Value("${resource.account.create}")

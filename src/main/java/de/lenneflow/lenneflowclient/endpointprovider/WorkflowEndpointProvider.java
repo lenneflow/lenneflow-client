@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @Component
 public class WorkflowEndpointProvider {
-    @Value("${lenneflow.root.url}")
-    private String rootUrl;
 
     @Value("${lenneflow.workflow.root.url}")
     private String workflowRootUrl;

@@ -1,5 +1,6 @@
 package de.lenneflow.lenneflowclient.controller;
 
+import de.lenneflow.lenneflowclient.dto.LoginDTO;
 import de.lenneflow.lenneflowclient.dto.UserDto;
 import de.lenneflow.lenneflowclient.dto.UserDto2;
 import de.lenneflow.lenneflowclient.dto.UserToken;
@@ -11,6 +12,7 @@ import de.lenneflow.lenneflowclient.util.RestUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashSet;
@@ -30,6 +32,20 @@ public class AccountController {
         this.accountEndpointProvider = accountEndpointProvider;
     }
 
+    @GetMapping("/user/edit/{uid}")
+    public String editUserGet(ModelMap model, @PathVariable String uid) {
+        model = controllerUtil.createModelMap(model);
+        User foundUser = restUtil.getForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAccountPath().replace("{uid}", uid), User.class);
+        UserDto2 user = new UserDto2();
+        user.setUsername(foundUser.getUsername());
+        user.setEmail(foundUser.getEmail());
+        user.setRole(foundUser.getAuthorities().iterator().next());
+        model.addAttribute("user", user);
+        model.addAttribute("roles", Role.values());
+        model.addAttribute("title", "Edit User " + user.getUsername());
+        return "/user/new-user";
+    }
+
     @GetMapping("/user/new")
     public String newUserGet(ModelMap model) {
         model = controllerUtil.createModelMap(model);
@@ -40,8 +56,8 @@ public class AccountController {
         return "/user/new-user";
     }
 
-    @PostMapping("/user/new")
-    public String newUserPost(ModelMap model, UserDto2 user) {
+    @PostMapping({"/user/new", "/user/edit/{uid}"})
+    public String newUserPost(ModelMap model, UserDto2 user, @PathVariable String uid) {
         Set<Role> authorities = new HashSet<>();
         authorities.add(user.getRole());
         UserDto userDto = new UserDto();
@@ -49,26 +65,36 @@ public class AccountController {
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setAuthorities(authorities);
-        restUtil.postForObject(accountEndpointProvider.getRootUrl() + accountEndpointProvider.getCreateAccountPath(), user, UserDto.class);
+        restUtil.postForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getCreateAccountPath(), user, UserDto.class);
         return "redirect:/user/list";
     }
 
     @GetMapping("/user/list")
     public String newUserListGet(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<User> users = restUtil.getForObject(accountEndpointProvider.getRootUrl() + accountEndpointProvider.getFindAllAccountsPath(), List.class);
+        List<User> users = restUtil.getForObjectList(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAllAccountsPath(), List.class);
         model.addAttribute("userList", users);
         model.addAttribute("title", "User List");
         return "/user/user-list";
     }
 
-    @GetMapping("/user/new-token")
-    public String userToken(ModelMap model, UserDto user) {
+    @GetMapping("/user/delete/{uid}")
+    public String deleteUser(ModelMap model, @PathVariable String uid) {
         model = controllerUtil.createModelMap(model);
-        UserToken token =new UserToken();
+        restUtil.deleteObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getDeleteAccountPath().replace("{uid}", uid));
+        return "redirect:/user/list";
+    }
+
+    @GetMapping("/user/new-token")
+    public String userToken(ModelMap model) {
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setPassword("max");
+        loginDTO.setUsername("max");
+        model = controllerUtil.createModelMap(model);
+        UserToken token = restUtil.postForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getUserTokenPath(), loginDTO,  UserToken.class);
         model.addAttribute("token", token);
-        model.addAttribute("title", "New Token");
-        return "/user/new-token";
+        model.addAttribute("title", "Generated Token");
+        return "/user/token-details";
     }
 
 }

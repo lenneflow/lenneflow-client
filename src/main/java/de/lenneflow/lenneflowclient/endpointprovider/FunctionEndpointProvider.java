@@ -15,9 +15,6 @@ import org.springframework.stereotype.Component;
 public class FunctionEndpointProvider {
 
 
-    @Value("${lenneflow.root.url}")
-    private String rootUrl;
-
     @Value("${lenneflow.function.root.url}")
     private String functionRootUrl;
 

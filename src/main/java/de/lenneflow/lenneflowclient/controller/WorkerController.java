@@ -3,10 +3,10 @@ package de.lenneflow.lenneflowclient.controller;
 import de.lenneflow.lenneflowclient.endpointprovider.FunctionEndpointProvider;
 import de.lenneflow.lenneflowclient.endpointprovider.WorkerEndpointProvider;
 import de.lenneflow.lenneflowclient.endpointprovider.WorkflowEndpointProvider;
-import de.lenneflow.lenneflowclient.enums.JsonSchemaVersion;
 import de.lenneflow.lenneflowclient.model.*;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;

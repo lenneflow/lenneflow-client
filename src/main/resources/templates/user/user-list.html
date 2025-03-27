@@ -85,22 +85,19 @@
                                         </td>
                                         <td th:text="${user.username}"></td>
                                         <td th:text="${user.email}"></td>
-                                        <td th:text="${user.getAuthorities().get(0)}"></td>
+                                        <td th:text="${user.authorities}"></td>
                                         <td>
                                             <span><a type="button" data-toggle="tooltip" th:href="@{/user/details/{uid}(uid=${user.uid})}" data-placement="top" title="Open User Profile" class="btn btn-info btn-sm fa fa-info"></a></span>
-                                            <span><a type="button" data-toggle="tooltip" th:href="@{/user/edit/{uid}(uid=${user.uid})}" data-placement="top" title="Edit User" class="btn btn-primary btn-sm fa fa-edit"></a></span>
                                             <span data-toggle="modal" th:attr="data-target='#modalDelete'+${user.uid}" data-target="#modalDelete"><button type="button" data-toggle="tooltip" data-placement="top" title="Delete User" class="btn btn-danger btn-sm fa fa-trash"></button></span>
                                             <div class="modal fade" id="modalDelete" role="dialog"
                                                  th:id="modalDelete+${user.uid}" aria-hidden="true">
-                                                <form class="form-valid" action="#"
+                                                <form class="form-valid"
                                                       th:action="@{/user/delete/{uid}(uid=${user.uid})}" method="get">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-body">
                                                                 <label  class="col-form-label"
                                                                        th:text="'Really want to delete ' + '['+${user.username}+']'"></label>
-                                                                <input type="hidden" id="functionUid" name="functionUid"
-                                                                       th:value="${user.uid}">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

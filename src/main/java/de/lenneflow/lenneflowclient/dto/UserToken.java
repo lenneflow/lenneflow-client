@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 public class UserToken {
 
-    private String description;
-
     private String accessToken;
 
     private String tokenType;
