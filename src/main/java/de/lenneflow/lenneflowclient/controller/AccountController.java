@@ -9,6 +9,8 @@ import de.lenneflow.lenneflowclient.enums.Role;
 import de.lenneflow.lenneflowclient.model.AccountUser;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,7 +82,6 @@ public class AccountController {
 
     @GetMapping("/user/delete/{uid}")
     public String deleteUser(ModelMap model, @PathVariable String uid) {
-        model = controllerUtil.createModelMap(model);
         restUtil.deleteObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getDeleteAccountPath().replace("{uid}", uid));
         return "redirect:/user/list";
     }
@@ -88,8 +89,9 @@ public class AccountController {
     @GetMapping("/user/new-token")
     public String userToken(ModelMap model) {
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setPassword("max");
-        loginDTO.setUsername("max");
+        LoginDTO principal = (LoginDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        loginDTO.setPassword(principal.getUsername());
+        loginDTO.setUsername(principal.getPassword());
         model = controllerUtil.createModelMap(model);
         UserToken token = restUtil.postForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getUserTokenPath(), loginDTO,  UserToken.class);
         model.addAttribute("token", token);

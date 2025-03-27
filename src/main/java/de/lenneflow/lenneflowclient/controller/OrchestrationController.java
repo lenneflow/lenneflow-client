@@ -43,6 +43,12 @@ public class OrchestrationController {
         return "redirect:/executions/" + execution.getRunUid() + "/details";
     }
 
+    @GetMapping("/executions/delete/{uid}")
+    public String deleteWorkflowRun(@PathVariable String uid, ModelMap model) {
+        restUtil.deleteObject(orchestrationEndpointProvider.getOrchestrationRootUrl() + orchestrationEndpointProvider.getDeleteWorkflowExecutionPath().replace("{uid}", uid));
+        return "redirect:/executions/list";
+    }
+
     @GetMapping("/executions/details/{uid}")
     public String getWorkflowRun(@PathVariable String uid, ModelMap model) {
         model = controllerUtil.createModelMap(model);

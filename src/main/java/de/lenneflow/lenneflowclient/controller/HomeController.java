@@ -4,6 +4,7 @@ import de.lenneflow.lenneflowclient.endpointprovider.FunctionEndpointProvider;
 import de.lenneflow.lenneflowclient.endpointprovider.OrchestrationEndpointProvider;
 import de.lenneflow.lenneflowclient.endpointprovider.WorkerEndpointProvider;
 import de.lenneflow.lenneflowclient.endpointprovider.WorkflowEndpointProvider;
+import de.lenneflow.lenneflowclient.enums.RunStatus;
 import de.lenneflow.lenneflowclient.model.*;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -45,6 +48,7 @@ public class HomeController {
         List<WorkflowInstance> instances = restUtil.getForObjectList(orchestrationEndpointProvider.getOrchestrationRootUrl() + orchestrationEndpointProvider.getFindAllWorkflowInstancesPath(), List.class);
         List<Cluster> clusters = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllClustersPath(), List.class);
         RunStatistic runStatistic = getRunStatistic(instances);
+        //int[] runStatistic = {80,20};
         model.addAttribute("functions", functions);
         model.addAttribute("workflows", workflows);
         model.addAttribute("clusters", clusters);
@@ -74,10 +78,19 @@ public class HomeController {
 
     private RunStatistic getRunStatistic(List<WorkflowInstance> instances){
         RunStatistic runStatistic = new RunStatistic();
-        runStatistic.setTotalRuns(instances.size());
+        int total = instances.size();
+        //int running = instances.stream().filter(execution -> execution.getRunStatus() == RunStatus.RUNNING ).collect(Collectors.toSet()).size();
+        //int completed =  instances.stream().filter(execution -> execution.getRunStatus() == RunStatus.COMPLETED).collect(Collectors.toSet()).size();
+        //int failed = instances.stream().filter(execution -> execution.getRunStatus() == RunStatus.FAILED).collect(Collectors.toSet()).size();
+
+        int running = 0, failed = 0, completed = 1;
+        runStatistic.setFailureRate((failed / total) * 100);
+        runStatistic.setSuccessRate((completed / total) * 100);
+        runStatistic.setRunningRate((running / total) * 100);
 
 
         return runStatistic;
+
     }
 
 }

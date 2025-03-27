@@ -41,6 +41,10 @@
                                     <div class="text-center">
                                         <h2 class="h4 text-gray-900 mb-4">Lenneflow Client <br> Welcome!</h2>
                                     </div>
+                                    <div style="color: red" align="center" th:if="${param.error}"
+                                         >Login error, Please check your credentials</div>
+                                    <div style="color: green" align="center" th:if="${param.logout}"
+                                         >Logout successful</div>
                                     <form th:action="@{/login}" method="post">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"

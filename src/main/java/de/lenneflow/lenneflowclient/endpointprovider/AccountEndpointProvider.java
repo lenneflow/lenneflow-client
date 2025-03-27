@@ -23,6 +23,9 @@ public class AccountEndpointProvider {
     @Value("${resource.account.find}")
     private String findAccountPath;
 
+    @Value("${resource.account.find-by-userName}")
+    private String findAccountByNamePath;
+
     @Value("${resource.account.delete}")
     private String deleteAccountPath;
 

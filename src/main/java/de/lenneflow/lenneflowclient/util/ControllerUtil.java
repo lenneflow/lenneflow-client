@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import de.lenneflow.lenneflowclient.dto.LoginDTO;
 import de.lenneflow.lenneflowclient.enums.RunStatus;
 import de.lenneflow.lenneflowclient.model.*;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -233,9 +234,8 @@ public class ControllerUtil {
         String userName = "unknown";
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                userName = ((UserDetails) principal).getUsername();
+            if (principal instanceof LoginDTO) {
+                userName = ((LoginDTO) principal).getUsername();
             } else {
                 userName = principal.toString();
             }
@@ -246,7 +246,7 @@ public class ControllerUtil {
 
     }
 
-    public AccountUser getLoggedInUser() {
+    public AccountUser getLoggedInUserPassword() {
         //return userRepository.findByUserName(getLoggedInUserName());
         AccountUser user = new AccountUser();
         user.setUsername(getLoggedInUserName());

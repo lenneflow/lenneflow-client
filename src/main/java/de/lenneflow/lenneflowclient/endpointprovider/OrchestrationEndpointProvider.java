@@ -43,4 +43,7 @@ public class OrchestrationEndpointProvider {
 
     @Value("${resource.orchestration.workflow.instances.delete}")
     public String deleteWorkflowInstancesPath;
+
+    @Value("${resource.orchestration.workflow.execution.delete}")
+    public String deleteWorkflowExecutionPath;
 }

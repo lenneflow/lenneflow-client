@@ -3,10 +3,7 @@ package de.lenneflow.lenneflowclient.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -75,6 +72,16 @@ public class RestUtil {
         try {
             HttpEntity<Object> entity = new HttpEntity<>(body, getHeaders());
             return restTemplate.exchange(url, HttpMethod.POST, entity, objectClass).getBody();
+        } catch (RestClientException e) {
+            logger.error(ERROR_MESSAGE, url, e.getMessage());
+            return null;
+        }
+    }
+
+    public HttpStatusCode postForStatusCode(String url, Object body, Class objectClass){
+        try {
+            HttpEntity<Object> entity = new HttpEntity<>(body, getHeaders());
+            return restTemplate.exchange(url, HttpMethod.POST, entity, objectClass).getStatusCode();
         } catch (RestClientException e) {
             logger.error(ERROR_MESSAGE, url, e.getMessage());
             return null;

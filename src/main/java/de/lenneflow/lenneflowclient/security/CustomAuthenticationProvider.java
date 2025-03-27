@@ -1,16 +1,19 @@
 package de.lenneflow.lenneflowclient.security;
 
+import de.lenneflow.lenneflowclient.dto.LoginDTO;
+import de.lenneflow.lenneflowclient.dto.UserToken;
 import de.lenneflow.lenneflowclient.endpointprovider.AccountEndpointProvider;
+import de.lenneflow.lenneflowclient.enums.Role;
 import de.lenneflow.lenneflowclient.model.AccountUser;
 import de.lenneflow.lenneflowclient.util.RestUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -31,8 +34,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         final String name = authentication.getName();
         final String password = authentication.getCredentials().toString();
-        AccountUser foundUser = restUtil.getForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAccountPath().replace("{uid}", uid), AccountUser.class);
-        return authenticateAgainstThirdPartyAndGetAuthentication(name, password);
+        return authenticateAgainstAccountService(name, password);
     }
 
     @Override
@@ -40,10 +42,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 
-    private static UsernamePasswordAuthenticationToken authenticateAgainstThirdPartyAndGetAuthentication(String name, String password) {
+    private UsernamePasswordAuthenticationToken authenticateAgainstAccountService(String name, String password) {
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(name, password);
+        AccountUser foundUser = restUtil.getForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAccountByNamePath().replace("{userName}", name), AccountUser.class);
+        if (foundUser == null) {
+            authentication.setAuthenticated(false);
+            return null;
+        }
         final List<GrantedAuthority> grantedAuths = new ArrayList<>();
-        grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-        final UserDetails principal = new User(name, password, grantedAuths);
+        for(Role role: foundUser.getAuthorities()){
+            grantedAuths.add(new SimpleGrantedAuthority(role.getValue()));
+        }
+        HttpStatusCode status = restUtil.postForStatusCode(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getUserTokenPath(), new LoginDTO(name, password),  UserToken.class);
+        if(status != HttpStatus.OK){
+            authentication.setAuthenticated(false);
+            return null;
+        }
+        final LoginDTO principal = new LoginDTO(name, password);
         return new UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
     }
 }
