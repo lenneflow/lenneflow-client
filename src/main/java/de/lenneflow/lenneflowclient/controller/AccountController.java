@@ -6,7 +6,7 @@ import de.lenneflow.lenneflowclient.dto.UserDto2;
 import de.lenneflow.lenneflowclient.dto.UserToken;
 import de.lenneflow.lenneflowclient.endpointprovider.AccountEndpointProvider;
 import de.lenneflow.lenneflowclient.enums.Role;
-import de.lenneflow.lenneflowclient.model.User;
+import de.lenneflow.lenneflowclient.model.AccountUser;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
 import org.springframework.stereotype.Controller;
@@ -35,7 +35,7 @@ public class AccountController {
     @GetMapping("/user/edit/{uid}")
     public String editUserGet(ModelMap model, @PathVariable String uid) {
         model = controllerUtil.createModelMap(model);
-        User foundUser = restUtil.getForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAccountPath().replace("{uid}", uid), User.class);
+        AccountUser foundUser = restUtil.getForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAccountPath().replace("{uid}", uid), AccountUser.class);
         UserDto2 user = new UserDto2();
         user.setUsername(foundUser.getUsername());
         user.setEmail(foundUser.getEmail());
@@ -72,7 +72,7 @@ public class AccountController {
     @GetMapping("/user/list")
     public String newUserListGet(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<User> users = restUtil.getForObjectList(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAllAccountsPath(), List.class);
+        List<AccountUser> users = restUtil.getForObjectList(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAllAccountsPath(), List.class);
         model.addAttribute("userList", users);
         model.addAttribute("title", "User List");
         return "/user/user-list";

@@ -1,5 +1,8 @@
 package de.lenneflow.lenneflowclient.security;
 
+import de.lenneflow.lenneflowclient.endpointprovider.AccountEndpointProvider;
+import de.lenneflow.lenneflowclient.model.AccountUser;
+import de.lenneflow.lenneflowclient.util.RestUtil;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,10 +19,19 @@ import java.util.List;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
+    private final RestUtil restUtil;
+    private final AccountEndpointProvider accountEndpointProvider;
+
+    public CustomAuthenticationProvider(RestUtil restUtil, AccountEndpointProvider accountEndpointProvider) {
+        this.restUtil = restUtil;
+        this.accountEndpointProvider = accountEndpointProvider;
+    }
+
     @Override
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         final String name = authentication.getName();
         final String password = authentication.getCredentials().toString();
+        AccountUser foundUser = restUtil.getForObject(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAccountPath().replace("{uid}", uid), AccountUser.class);
         return authenticateAgainstThirdPartyAndGetAuthentication(name, password);
     }
 

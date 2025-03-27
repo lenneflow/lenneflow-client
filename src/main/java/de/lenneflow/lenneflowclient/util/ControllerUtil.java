@@ -246,9 +246,9 @@ public class ControllerUtil {
 
     }
 
-    public User getLoggedInUser() {
+    public AccountUser getLoggedInUser() {
         //return userRepository.findByUserName(getLoggedInUserName());
-        User user = new User();
+        AccountUser user = new AccountUser();
         user.setUsername(getLoggedInUserName());
         return user;
     }

@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User{
+public class AccountUser {
 
     private String uid;
 
