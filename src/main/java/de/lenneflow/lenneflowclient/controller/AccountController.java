@@ -9,6 +9,7 @@ import de.lenneflow.lenneflowclient.enums.Role;
 import de.lenneflow.lenneflowclient.model.AccountUser;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -74,7 +75,7 @@ public class AccountController {
     @GetMapping("/user/list")
     public String newUserListGet(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<AccountUser> users = restUtil.getForObjectList(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAllAccountsPath(), List.class);
+        List<AccountUser> users = restUtil.getForObjectList(accountEndpointProvider.getAccountRootUrl() + accountEndpointProvider.getFindAllAccountsPath(), new ParameterizedTypeReference<List<AccountUser>>() {});
         model.addAttribute("userList", users);
         model.addAttribute("title", "User List");
         return "/user/user-list";

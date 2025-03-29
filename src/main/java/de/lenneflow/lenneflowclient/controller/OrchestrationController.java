@@ -1,9 +1,11 @@
 package de.lenneflow.lenneflowclient.controller;
 
 import de.lenneflow.lenneflowclient.endpointprovider.OrchestrationEndpointProvider;
+import de.lenneflow.lenneflowclient.model.Function;
 import de.lenneflow.lenneflowclient.model.WorkflowExecution;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class OrchestrationController {
     @GetMapping("/executions/list")
     public String workflowRunList(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<WorkflowExecution> executions = restUtil.getForObjectList(orchestrationEndpointProvider.getOrchestrationRootUrl() + orchestrationEndpointProvider.getFindAllWorkflowInstancesPath(), List.class);
+        List<WorkflowExecution> executions = restUtil.getForObjectList(orchestrationEndpointProvider.getOrchestrationRootUrl() + orchestrationEndpointProvider.getFindAllWorkflowInstancesPath(), new ParameterizedTypeReference<List<WorkflowExecution>>(){});
         model.addAttribute("executions", executions);
         return "orchestration/run-list";
     }

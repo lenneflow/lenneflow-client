@@ -3,13 +3,13 @@ package de.lenneflow.lenneflowclient.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,13 +28,13 @@ public class RestUtil {
         this.restTemplate = restTemplate;
     }
 
-    public List getForObjectList(String url, Class<List> objectClass){
+    public <T> List<T> getForObjectList(String url, ParameterizedTypeReference<?> responseType){
         try {
             HttpEntity<String> entity = new HttpEntity<>(getHeaders());
-            return restTemplate.exchange(url, HttpMethod.GET, entity, objectClass).getBody();
+            ResponseEntity<List<T>> resp = (ResponseEntity<List<T>>) restTemplate.exchange(url, HttpMethod.GET, entity, responseType);
+            return resp.getBody();
         } catch (RestClientException e) {
             logger.error(ERROR_MESSAGE, url, e.getMessage());
-            e.printStackTrace();
             return new ArrayList();
         }
     }
@@ -94,7 +94,6 @@ public class RestUtil {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
-        System.out.println("Bearer " + masterToken.trim().getBytes());
         headers.setBearerAuth(masterToken.trim());
 
         return headers;

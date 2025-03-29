@@ -9,6 +9,7 @@ import de.lenneflow.lenneflowclient.model.*;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class WorkflowController {
     @GetMapping("/workflow/list")
     public String workflowListList(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<Workflow> workflows = restUtil.getForObjectList(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindAllWorkflowsPath(), List.class);
+        List<Workflow> workflows = restUtil.getForObjectList(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindAllWorkflowsPath(), new ParameterizedTypeReference<List<Workflow>>(){});
         model.addAttribute("workflows", workflows);
         return "workflow/workflow-list";
     }
@@ -123,7 +124,7 @@ public class WorkflowController {
         step.setWorkflowName(workflow.getName());
         step.setExecutionOrder(controllerUtil.getNextWorkflowStepOrder(workflow));
 
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>(){});
 
         model.addAttribute("functions", functions);
         model.addAttribute("workflow", workflow);
@@ -139,8 +140,8 @@ public class WorkflowController {
     public String newWorkflowStepPost(ModelMap model, @PathVariable("uid") String workflowUid, @ModelAttribute WorkflowStep workflowStep) {
         model = controllerUtil.createModelMap(model);
         Workflow workflow = restUtil.getForObject(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindWorkflowPath().replace("{uid}", workflowUid), Workflow.class);
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
-        List<Workflow> workflows = restUtil.getForObjectList(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindAllWorkflowsPath(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>(){});
+        List<Workflow> workflows = restUtil.getForObjectList(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindAllWorkflowsPath(), new ParameterizedTypeReference<List<Workflow>>(){});
 
         model.addAttribute("functions", functions);
         model.addAttribute("workflow", workflow);
@@ -170,7 +171,7 @@ public class WorkflowController {
         model = controllerUtil.createModelMap(model);
         SimpleWorkflowStep simpleStep = new SimpleWorkflowStep();
         Workflow workflow = restUtil.getForObject(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindWorkflowPath().replace("{uid}", workflowUid), Workflow.class);
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>(){});
         simpleStep.setName(workflowStep.getName());
         simpleStep.setWorkflowUid(workflowUid);
         simpleStep.setFunctionUid(workflowStep.getFunctionUid());
@@ -200,7 +201,7 @@ public class WorkflowController {
     public String newSwitchStepPost(ModelMap model,@PathVariable("uid") String workflowUid, @RequestParam String action, @ModelAttribute WorkflowStep workflowStep) {
         model = controllerUtil.createModelMap(model);
         Workflow workflow = restUtil.getForObject(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindWorkflowPath().replace("{uid}", workflowUid), Workflow.class);
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>(){});
         SwitchWorkflowStep switchStep = new SwitchWorkflowStep();
         switchStep.setName(workflowStep.getName());
         switchStep.setWorkflowUid(workflowUid);
@@ -254,7 +255,7 @@ public class WorkflowController {
         model = controllerUtil.createModelMap(model);
         WhileWorkflowStep whileStep = new WhileWorkflowStep();
         Workflow workflow = restUtil.getForObject(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindWorkflowPath().replace("{uid}", workflowUid), Workflow.class);
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>(){});
         whileStep.setName(workflowStep.getName());
         whileStep.setWorkflowUid(workflowUid);
         whileStep.setFunctionUid(workflowStep.getFunctionUid());
@@ -285,7 +286,7 @@ public class WorkflowController {
         model = controllerUtil.createModelMap(model);
         SubWorkflowStep subWorkflowStep = new SubWorkflowStep();
         Workflow workflow = restUtil.getForObject(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindWorkflowPath().replace("{uid}", workflowUid), Workflow.class);
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(),new ParameterizedTypeReference<List<Function>>(){});
         subWorkflowStep.setName(workflowStep.getName());
         subWorkflowStep.setWorkflowUid(workflowUid);
         subWorkflowStep.setSubWorkflowUid(workflowStep.getSubWorkflowUid());

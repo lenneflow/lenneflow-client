@@ -76,9 +76,16 @@
                                             <span class="copy-input" th:text="${execution.runUid}"></span>
                                         </td>
                                         <td th:text="${execution.workflowName}"></td>
-                                        <td th:text="${execution.startTime}"></td>
-                                        <td th:text="${execution.endTime}"></td>
-                                        <td th:text="${execution.runStatus}"></td>
+                                        <td th:text="${#temporals.format(execution.startTime, 'dd.MM.yyyy-HH:mm:ss')}"></td>
+                                        <td th:text="${#temporals.format(execution.endTime, 'dd.MM.yyyy-HH:mm:ss')}"></td>
+<!--                                        <td th:text="${execution.runStatus}"></td>-->
+                                        <td>
+                                            <th:block th:switch="${execution.runStatus.name()}">
+                                            <span th:case="'COMPLETED'" class="badge badge-success">Completed</span>
+                                            <span th:case="'FAILED'"></span>
+                                            <span th:case="'THREE'"></span>
+                                            </th:block>
+                                        </td>
                                         <td>
                                             <span><a type="button" data-toggle="tooltip" th:href="@{/executions/details/{uid}(uid=${execution.runUid})}" data-placement="top" title="Open Function Details" class="btn btn-info btn-sm fa fa-info"></a></span>
                                             <span data-toggle="modal" th:attr="data-target='#modalDelete'+${execution.runUid}" data-target="#modalDelete"><button type="button" data-toggle="tooltip" data-placement="top" title="Delete and Undeploy Function" class="btn btn-danger btn-sm fa fa-trash"></button></span>

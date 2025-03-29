@@ -7,6 +7,7 @@ import de.lenneflow.lenneflowclient.model.Function;
 import de.lenneflow.lenneflowclient.model.JsonSchema;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,7 @@ public class FunctionController {
     @GetMapping("/function/list")
     public String functionList(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>(){});
         model.addAttribute("functions", functions);
         return "function/function-list";
     }
@@ -97,7 +98,7 @@ public class FunctionController {
         if(function != null && function.getDeploymentState() == DeploymentState.UNDEPLOYED) {
             restUtil.deleteObject(functionEndpointProvider.getFunctionRootUrl() + "/" + uid);
         }
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>(){});
         model.addAttribute("functions", functions);
         return "function/function-list";
     }

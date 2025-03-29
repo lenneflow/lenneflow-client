@@ -20,8 +20,6 @@ public class KubernetesCluster {
 
     private String uid;
 
-    //DTO Section
-
     private String clusterName;
 
     private String region;

@@ -1,5 +1,6 @@
 package de.lenneflow.lenneflowclient.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.lenneflow.lenneflowclient.endpointprovider.FunctionEndpointProvider;
 import de.lenneflow.lenneflowclient.endpointprovider.OrchestrationEndpointProvider;
 import de.lenneflow.lenneflowclient.endpointprovider.WorkerEndpointProvider;
@@ -10,7 +11,7 @@ import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.catalina.Cluster;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class HomeController {
     private final WorkflowEndpointProvider workflowEndpointProvider;
     private final WorkerEndpointProvider workerEndpointProvider;
     private final OrchestrationEndpointProvider orchestrationEndpointProvider;
+    public final ObjectMapper objectMapper = new ObjectMapper();
 
     public HomeController(RestUtil restUtil, ControllerUtil controllerUtil, FunctionEndpointProvider functionEndpointProvider, WorkflowEndpointProvider workflowEndpointProvider, WorkerEndpointProvider workerEndpointProvider, OrchestrationEndpointProvider orchestrationEndpointProvider) {
         this.restUtil = restUtil;
@@ -43,17 +45,23 @@ public class HomeController {
     @GetMapping(value = {"", "/"})
     public String home(ModelMap model){
         model = controllerUtil.createModelMap(model);
-        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), List.class);
-        List<Workflow> workflows = restUtil.getForObjectList(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindAllWorkflowsPath(), List.class);
-        List<WorkflowInstance> instances = restUtil.getForObjectList(orchestrationEndpointProvider.getOrchestrationRootUrl() + orchestrationEndpointProvider.getFindAllWorkflowInstancesPath(), List.class);
-        List<Cluster> clusters = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllClustersPath(), List.class);
+        List<Function> functions = restUtil.getForObjectList(functionEndpointProvider.getFunctionRootUrl() + functionEndpointProvider.getFindAllFunctionsList(), new ParameterizedTypeReference<List<Function>>() {});
+        List<Workflow> workflows = restUtil.getForObjectList(workflowEndpointProvider.getWorkflowRootUrl() + workflowEndpointProvider.getFindAllWorkflowsPath(), new ParameterizedTypeReference<List<Workflow>>() {});
+        List<WorkflowInstance> instances = restUtil.getForObjectList(orchestrationEndpointProvider.getOrchestrationRootUrl() + orchestrationEndpointProvider.getFindAllWorkflowInstancesPath(),  new ParameterizedTypeReference<List<WorkflowInstance>>() {});
+        List<WorkflowInstance> runningInstances = instances.stream().filter(instance -> instance.getRunStatus().equals(RunStatus.RUNNING)).collect(Collectors.toList());
+        List<WorkflowInstance> pausedInstances = instances.stream().filter(instance -> instance.getRunStatus().equals(RunStatus.PAUSED)).collect(Collectors.toList());
+        List<KubernetesCluster> clusters = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllClustersPath(), new ParameterizedTypeReference<List<KubernetesCluster>>() {});
         RunStatistic runStatistic = getRunStatistic(instances);
-        //int[] runStatistic = {80,20};
         model.addAttribute("functions", functions);
         model.addAttribute("workflows", workflows);
         model.addAttribute("clusters", clusters);
         model.addAttribute("instances", instances);
+        model.addAttribute("runningInstances", runningInstances);
+        model.addAttribute("pausedInstances", pausedInstances);
         model.addAttribute("runStatistic", runStatistic);
+//        model.addAttribute("successRate", runStatistic.getSuccessRate());
+//        model.addAttribute("failureRate", runStatistic.getFailureRate());
+//        model.addAttribute("runningRate", runStatistic.getRunningRate());
         return "index";
     }
 
@@ -79,15 +87,22 @@ public class HomeController {
     private RunStatistic getRunStatistic(List<WorkflowInstance> instances){
         RunStatistic runStatistic = new RunStatistic();
         int total = instances.size();
-        //int running = instances.stream().filter(execution -> execution.getRunStatus() == RunStatus.RUNNING ).collect(Collectors.toSet()).size();
-        //int completed =  instances.stream().filter(execution -> execution.getRunStatus() == RunStatus.COMPLETED).collect(Collectors.toSet()).size();
-        //int failed = instances.stream().filter(execution -> execution.getRunStatus() == RunStatus.FAILED).collect(Collectors.toSet()).size();
+        int running = 0;
+        int completed =  0;
+        int failed = 0;
 
-        int running = 0, failed = 0, completed = 1;
-        runStatistic.setFailureRate((failed / total) * 100);
-        runStatistic.setSuccessRate((completed / total) * 100);
-        runStatistic.setRunningRate((running / total) * 100);
-
+        for (WorkflowInstance instance : instances){
+            if (instance.getRunStatus().equals(RunStatus.RUNNING)){
+                running++;
+            } else if (instance.getRunStatus().equals(RunStatus.COMPLETED)){
+                completed++;
+            } else if (instance.getRunStatus().equals(RunStatus.FAILED)){
+                failed++;
+            }
+        }
+        runStatistic.setFailureRate((failed / total) * 100L);
+        runStatistic.setSuccessRate((completed / total) * 100L);
+        runStatistic.setRunningRate((running / total) * 100L);
 
         return runStatistic;
 

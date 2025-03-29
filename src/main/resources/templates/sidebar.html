@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
@@ -42,7 +42,7 @@
 	<div class="sidebar-heading">
 		Accounts
 	</div>
-	<li class="nav-item">
+	<li sec:authorize="hasRole('ROLE_ADMIN')"  class="nav-item">
 		<a class="nav-link" href="/user/new">
 			<span>New User</span></a>
 	</li>

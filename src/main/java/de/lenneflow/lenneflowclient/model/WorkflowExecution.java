@@ -31,10 +31,8 @@ public class WorkflowExecution {
 
     private int workflowVersion;
 
-    @JsonIgnore
     private LocalDateTime startTime;
 
-    @JsonIgnore
     private LocalDateTime endTime;
 
     private String failureReason;

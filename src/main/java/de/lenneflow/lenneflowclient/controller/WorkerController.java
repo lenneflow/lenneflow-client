@@ -7,6 +7,7 @@ import de.lenneflow.lenneflowclient.model.*;
 import de.lenneflow.lenneflowclient.util.ControllerUtil;
 import de.lenneflow.lenneflowclient.util.RestUtil;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class WorkerController {
     @GetMapping("/worker/k8s/token/list")
     public String KubernetesTokenList(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<AccessTokenDto> accessTokens = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllAccessTokenPath(), List.class);
+        List<AccessTokenDto> accessTokens = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllAccessTokenPath(), new ParameterizedTypeReference<List<AccessTokenDto>>(){});
         model.addAttribute("accessTokens", accessTokens);
         model.addAttribute("title", "Kubernetes Access Token List");
         return "worker/access-token-list";
@@ -58,7 +59,7 @@ public class WorkerController {
     @GetMapping("/worker/cloud/credential/list")
     public String cloudCredentialList(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<CloudCredentialDTO> cloudCredentials = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllCloudCredentialPath(), List.class);
+        List<CloudCredentialDTO> cloudCredentials = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllCloudCredentialPath(), new ParameterizedTypeReference<List<CloudCredentialDTO>>(){});
         model.addAttribute("cloudCredentials", cloudCredentials);
         model.addAttribute("title", "Cloud Credential List");
         return "worker/cloud-credential-list";
@@ -83,7 +84,7 @@ public class WorkerController {
     public String cloudClusterDetails(ModelMap model, @PathVariable String uid) {
         model = controllerUtil.createModelMap(model);
         KubernetesCluster cluster = restUtil.getForObject(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindClusterPath(), KubernetesCluster.class);
-        List<CloudCredentialDTO> cloudCredentials = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllCloudCredentialPath(), List.class);
+        List<CloudCredentialDTO> cloudCredentials = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllCloudCredentialPath(), new ParameterizedTypeReference<List<CloudCredentialDTO>>(){});
         model.addAttribute("cluster", cluster);
         model.addAttribute("credentials", cloudCredentials);
         model.addAttribute("title", "Cluster Information");
@@ -93,7 +94,7 @@ public class WorkerController {
     @GetMapping("/worker/cluster/list")
     public String cloudClusterList(ModelMap model) {
         model = controllerUtil.createModelMap(model);
-        List<KubernetesCluster> clusters = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllClustersPath(), List.class);
+        List<KubernetesCluster> clusters = restUtil.getForObjectList(workerEndpointProvider.getWorkerRootUrl() + workerEndpointProvider.getFindAllClustersPath(), new ParameterizedTypeReference<List<KubernetesCluster>>(){});
         model.addAttribute("clusters", clusters);
         model.addAttribute("title", "Cloud Cluster List");
         return "worker/cluster-list";
